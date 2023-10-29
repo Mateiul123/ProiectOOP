@@ -1,13 +1,19 @@
 #include <iostream>
 
 class Masina{
-int test;
+private:
+    const int id = 1;
+    std::string Tip_masina;
+    std::string culoare;
+public:
+
 };
 class test{
-
+int test;
 };
 
 int main() {
     std::cout << "Hello, World!" << std::endl;
     return 0;
 }
+
