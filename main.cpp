@@ -5,8 +5,6 @@ private:
     const int id = 1;
     std::string Tip_masina;
     std::string culoare;
-public:
-
 };
 class test{
 int test;
