@@ -23,9 +23,6 @@ public:
         masina::culoare = culoare;
     }
 
-        masina::motorizare = motorizare;
-    }
-
     int getTipMasina() const {
         return Tip_masina;
     }
@@ -38,7 +35,7 @@ public:
         return motorizare;
     }
 
-    masina& operator=(const masina& masina){
+    masina& operator=(const masina){
         this->culoare = culoare;
         this->Tip_masina = Tip_masina;
         this->motorizare = motorizare;
@@ -56,8 +53,10 @@ class app:public virtual masina{
 private:
     static int cntMasini;
     const int nrMasini = 0;
-    static int contor;
+
 protected:
+    static int contor;
+
 public:
 
     app(const int &tipMasina, const std::string &culoare, const float &motorizare, unsigned int pret,
@@ -67,12 +66,13 @@ public:
 
     static std::vector<masina> masini;
 
-    static void afisare_masini(){
-        std::cout<<"Avem disponibile urmatoarele masini: ";
-        for(auto &masina : masini){
-            std::cout << masina;
+    friend std::ostream &operator<<(std::ostream &os, const app &app){
+        for(auto & masina : app.masini){
+            os << masina ;
         }
+        return os;
     }
+
     static void first_question(){
         char yn;
         std::cout<<"Doriti sa cumparati o masina? [Y/N]: ";
@@ -84,19 +84,18 @@ public:
 
     }
 
-    friend std::ostream &operator<<(std::ostream &os, const app &app){
-        for(auto & masina : app.masini){
-            os << masina ;
-        }
-        return os;
-    }
 
 };
 
 int app::contor = 0;
 
+
 class constructor_masina : public virtual masina, public virtual app{
 public:
+    constructor_masina(const int &tipMasina, const std::string &culoare, const float &motorizare, unsigned int pret,
+                       const int &tipMasina1, const std::string &culoare1, const float &motorizare1, unsigned int pret1,
+                       const int nrMasini) : masina(tipMasina, culoare, motorizare, pret),
+                                             app(tipMasina1, culoare1, motorizare1, pret1, nrMasini) {contor++;}
 
     void culoareCustom(const std::string& newcolor){
         culoare = newcolor;
@@ -106,16 +105,28 @@ public:
     }
 };
 
+
+class functii{
+public:
+
+
+
+};
+
 int main() {
-    static std::vector<masina> masini;
+    std::vector<masina> masini;
     masini.emplace_back(1,"alb",1.4,10000);
     masini.emplace_back(1,"alb",1.4,10000);
     masini.emplace_back(1,"alb",1.4,10000);
     masini.emplace_back(1,"alb",1.4,10000);
     masini.emplace_back(1,"alb",1.4,10000);
 
+    std::cout<<"Avem disponibile urmatoarele masini: ";
+        for(auto &masina : masini){
+            std::cout<<masina;
+        }
+
     app::first_question();
-    app::afisare_masini();
 
     return 0;
 }
