@@ -1,132 +1,192 @@
 #include <iostream>
 #include <vector>
+#include <string>
+#include <algorithm>
 
-class masina{
-protected:
-    int Tip_masina;
+class Masina {
+public:
+    int tipMasina;
     std::string culoare;
     float motorizare;
     float pret;
-public:
-    std::vector<std::vector<float>> Customizari;
 
-    masina(const int &tipMasina, const std::string &culoare,
-           const float &motorizare, unsigned int pret) :  Tip_masina(tipMasina), culoare(culoare),
-                                                               motorizare(motorizare), pret(pret) {}
-    virtual ~masina() {}
+    Masina(int tip, const std::string &color, float engine, float price)
+            : tipMasina(tip), culoare(color), motorizare(engine), pret(price) {}
 
-    void setTipMasina(const int &tipMasina) {
-        Tip_masina = tipMasina;
+    void setCuloare(const std::string &color) {
+        culoare = color;
     }
 
-    void setCuloare(const std::string &culoare) {
-        masina::culoare = culoare;
+    void setMotorizare(float engine) {
+        motorizare = engine;
     }
 
-    int getTipMasina() const {
-        return Tip_masina;
-    }
+    float getCustomPrice() const {
+        float customPrice = pret;
 
-    const std::string &getCuloare() const {
-        return culoare;
-    }
-
-    float getMotorizare() const {
-        return motorizare;
-    }
-
-    masina& operator=(const masina){
-        this->culoare = culoare;
-        this->Tip_masina = Tip_masina;
-        this->motorizare = motorizare;
-        this->pret = pret;
-        return *this;
-    }
-    friend std::ostream &operator<<(std::ostream &out, const masina &masina) {
-        out << " Tip_masina: " << masina.Tip_masina << " culoare: " << masina.culoare << "pret: "<<masina.pret;
-        return out;
-    }
-
-};
-//"aplicatia" de baza
-class app:public virtual masina{
-private:
-    static int cntMasini;
-    const int nrMasini = 0;
-
-protected:
-    static int contor;
-
-public:
-
-    app(const int &tipMasina, const std::string &culoare, const float &motorizare, unsigned int pret,
-        const int nrMasini) : masina(tipMasina, culoare, motorizare, pret), nrMasini(contor++) {}
-
-    virtual ~app() {}
-
-    static std::vector<masina> masini;
-
-    friend std::ostream &operator<<(std::ostream &os, const app &app){
-        for(auto & masina : app.masini){
-            os << masina ;
+        if (culoare == "Negru") {
+            customPrice += 10000.99;
         }
+        else if (culoare == "Rosu") {
+            customPrice += 800.99;
+        }
+        else if (culoare == "Albastru") {
+            customPrice += 600.99;
+        }
+        else if (culoare == "Verde") {
+            customPrice += 1250.99;
+        } else if (culoare == "Galben"){
+            customPrice += 500.99;
+        }
+
+        if (motorizare == 1.6) {
+            customPrice += 1500.99;
+        }
+        else if (motorizare == 2.0) {
+            customPrice += 3000.0;
+        }
+        else if (motorizare == 2.5) {
+            customPrice += 5750.99;
+        }
+        else if (motorizare == 1.4){
+            customPrice += 999.99;
+        }
+        return customPrice;
+    }
+
+
+    friend std::ostream &operator<<(std::ostream &os, const Masina &masina) {
+        os << "Tip_masina: " << masina.tipMasina
+           << " culoare: " << masina.culoare
+           << " capacitate: " << masina.motorizare
+           << " pret: " << masina.getCustomPrice() << '\n';
         return os;
     }
+};
 
-    static void first_question(){
+class App {
+private:
+    static int contor;
+    int nrMasini = 0;
+    std::vector<Masina> masiniCumparate;
+    float totalCost = 0;
+
+public:
+    App() {
+        masini.emplace_back(1, "alb", 1.2, 10000);
+        masini.emplace_back(2, "alb", 1.2, 10000);
+        masini.emplace_back(3, "alb", 1.2, 10000);
+        masini.emplace_back(4, "alb", 1.2, 10000);
+        masini.emplace_back(5, "alb", 1.2, 10000);
+        nrMasini = contor++;
+    }
+
+    char firstQuestion() {
         char yn;
-        std::cout<<"Doriti sa cumparati o masina? [Y/N]: ";
-        std::cin>>yn;
+        std::cout << "Doriti sa cumparati o masina? [Y/N]: ";
+        std::cin >> yn;
         if (yn == 'Y')
-            std::cout<<"Bine ati venit!";
-        else
-            std::cout << "Ne pare rau vindem doar masini :(";
-
+            std::cout << "Bine ati venit!\n\n\n";
+        return yn;
     }
 
+    int sQuestion() {
+        int selectedType = 0;
+        std::cout << "Avem disponibile urmatoarele masini: \n\n\n";
+        for (const auto &masina : masini) {
+            std::cout << masina;
+        }
+        std::cout << "\n\n\n";
 
-};
+        std::cout << "Introduceti tipul masinii dorite (1-" << masini.size() << "): ";
+        std::cin >> selectedType;
 
-int app::contor = 0;
-
-
-class constructor_masina : public virtual masina, public virtual app{
-public:
-    constructor_masina(const int &tipMasina, const std::string &culoare, const float &motorizare, unsigned int pret,
-                       const int &tipMasina1, const std::string &culoare1, const float &motorizare1, unsigned int pret1,
-                       const int nrMasini) : masina(tipMasina, culoare, motorizare, pret),
-                                             app(tipMasina1, culoare1, motorizare1, pret1, nrMasini) {contor++;}
-
-    void culoareCustom(const std::string& newcolor){
-        culoare = newcolor;
-    }
-    void motorizareCustom(const std::string& newcolor){
-        culoare = newcolor;
-    }
-};
-
-
-class functii{
-public:
-
-
-
-};
-
-int main() {
-    std::vector<masina> masini;
-    masini.emplace_back(1,"alb",1.4,10000);
-    masini.emplace_back(1,"alb",1.4,10000);
-    masini.emplace_back(1,"alb",1.4,10000);
-    masini.emplace_back(1,"alb",1.4,10000);
-    masini.emplace_back(1,"alb",1.4,10000);
-
-    std::cout<<"Avem disponibile urmatoarele masini: ";
-        for(auto &masina : masini){
-            std::cout<<masina;
+        if (selectedType < 1 || selectedType > masini.size()) {
+            std::cout << "Tipul masinii introdus nu este valid. Va rugam selectati un numar intre 1 si " << masini.size() << ".\n";
+            selectedType = 0;
         }
 
-    app::first_question();
+        return selectedType;
+    }
+
+    void customizeCar(Masina &selectedCar) {
+        char customizationChoice;
+        std::cout << "Doriti sa personalizati masina? [Y/N]: ";
+        std::cin >> customizationChoice;
+
+        if (customizationChoice == 'Y') {
+            std::string customColor;
+            float customEngineCapacity;
+
+            std::cout << "Alegeti culoarea din " << availableColors.size() << " optiuni: ";
+            for (const auto &color : availableColors) {
+                std::cout << color << " ";
+            }
+            std::cout << "\nCuloare: ";
+            std::cin >> customColor;
+
+            if (std::find(availableColors.begin(), availableColors.end(), customColor) != availableColors.end()) {
+                std::cout << "Alegeti capacitatea motorului din " << availableEngineCapacities.size()
+                          << " optiuni: ";
+                for (const auto &engine : availableEngineCapacities) {
+                    std::cout << engine << " ";
+                }
+                std::cout << "\nCapacitate motor: ";
+                std::cin >> customEngineCapacity;
+
+                if (std::find(availableEngineCapacities.begin(), availableEngineCapacities.end(), customEngineCapacity) !=
+                    availableEngineCapacities.end()) {
+                    selectedCar.setCuloare(customColor);
+                    selectedCar.setMotorizare(customEngineCapacity);
+                } else {
+                    std::cout << "Capacitatea motorului aleasa nu este valida. Masina va ramane neschimbata.\n";
+                }
+            } else {
+                std::cout << "Culoarea aleasa nu este valida. Masina va ramane neschimbata.\n";
+            }
+        } else {
+            std::cout << "Ati ales o masina standard:\n";
+        }
+    }
+
+    void buyCar(Masina &selectedCar) {
+        masiniCumparate.push_back(selectedCar);
+        totalCost += selectedCar.getCustomPrice();
+    }
+
+    void displayPurchaseHistory() {
+        std::cout << "Ati cumparat " << masiniCumparate.size() << " masini:\n";
+        for (const auto &car : masiniCumparate) {
+            std::cout << car;
+        }
+        std::cout << "Total de plata: " << totalCost << '\n';
+    }
+
+    const std::vector<std::string> availableColors = {"Galben", "Negru", "Rosu", "Albastru", "Verde"};
+    const std::vector<float> availableEngineCapacities = {1.4, 1.6, 2.0, 2.5};
+    std::vector<Masina> masini;
+};
+
+int App::contor = 0;
+
+int main() {
+    App app;
+
+    while (app.firstQuestion() == 'Y') {
+        int selectedType = app.sQuestion();
+
+        if (selectedType != 0) {
+            Masina selectedCar = app.masini[selectedType - 1];
+            std::cout << "Ati selectat masina de tip " << selectedCar.tipMasina <<std::endl;
+
+            app.customizeCar(selectedCar);
+            app.buyCar(selectedCar);
+        } else {
+            std::cout << "Selectia nu este valida. Aplicatia se va inchide.\n";
+        }
+    }
+
+    app.displayPurchaseHistory();
 
     return 0;
 }
