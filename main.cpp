@@ -199,16 +199,6 @@ int main() {
     Customer customer("Matei Pop", "matei-serban.pop@s.unibuc.ro");
     std::ofstream o ("Feedback.txt");
     std::string msg;
-    char YN;
-    YN == app.firstQuestion();
-
-    if(YN != 'Y'){
-        std::cout << "Ne pare rau sa auzim asta. Oferiti-ne feedback: \n";
-        std::cin >> msg;
-        o << msg;
-        std::cout <<"Multumim frumos! O zi buna.";
-        return 0;
-    }
 
     while (app.firstQuestion() == 'Y') {
         int selectedType = app.sQuestion();
