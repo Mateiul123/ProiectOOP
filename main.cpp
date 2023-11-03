@@ -54,13 +54,37 @@ public:
         return customPrice;
     }
 
-
     friend std::ostream &operator<<(std::ostream &os, const Masina &masina) {
         os << "Tip_masina: " << masina.tipMasina
            << " culoare: " << masina.culoare
            << " capacitate: " << masina.motorizare
            << " pret: " << masina.getCustomPrice() << '\n';
         return os;
+    }
+};
+
+class Customer {
+private:
+    std::string name;
+    std::string contactInfo;
+    std::vector<Masina> purchasedCars;
+    float totalCost = 0;
+
+public:
+    Customer(const std::string& customerName, const std::string& contact) : name(customerName), contactInfo(contact) {}
+
+    void buyCar(const Masina& car) {
+        purchasedCars.push_back(car);
+        totalCost += car.getCustomPrice();
+    }
+
+    void displayPurchaseHistory() {
+        std::cout << "Client: " << name << "mail: (" << contactInfo << ")\n";
+        std::cout << "Masini cumparate: " << purchasedCars.size() << '\n';
+        for (const auto& car : purchasedCars) {
+            std::cout << car;
+        }
+        std::cout << "Cost total: " << totalCost << '\n';
     }
 };
 
@@ -171,6 +195,7 @@ int App::contor = 0;
 
 int main() {
     App app;
+    Customer customer("Matei Pop", "matei-serban.pop@s.unibuc.ro");
 
     while (app.firstQuestion() == 'Y') {
         int selectedType = app.sQuestion();
@@ -181,12 +206,19 @@ int main() {
 
             app.customizeCar(selectedCar);
             app.buyCar(selectedCar);
+            customer.buyCar(selectedCar);
         } else {
             std::cout << "Selectia nu este valida. Aplicatia se va inchide.\n";
         }
     }
 
+    std::cout<<"\n\n\n";
+
     app.displayPurchaseHistory();
+
+    std::cout<<"\n\n\n";
+
+    customer.displayPurchaseHistory();
 
     return 0;
 }
