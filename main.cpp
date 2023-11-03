@@ -2,6 +2,7 @@
 #include <vector>
 #include <string>
 #include <algorithm>
+#include <fstream>
 
 class Masina {
 public:
@@ -79,7 +80,7 @@ public:
     }
 
     void displayPurchaseHistory() {
-        std::cout << "Client: " << name << "mail: (" << contactInfo << ")\n";
+        std::cout << "Client: " << name << " mail: (" << contactInfo << ")\n";
         std::cout << "Masini cumparate: " << purchasedCars.size() << '\n';
         for (const auto& car : purchasedCars) {
             std::cout << car;
@@ -138,7 +139,7 @@ public:
         std::cout << "Doriti sa personalizati masina? [Y/N]: ";
         std::cin >> customizationChoice;
 
-        if (customizationChoice == 'Y') {
+        if (customizationChoice == 'Y' || customizationChoice == 'y') {
             std::string customColor;
             float customEngineCapacity;
 
@@ -196,6 +197,18 @@ int App::contor = 0;
 int main() {
     App app;
     Customer customer("Matei Pop", "matei-serban.pop@s.unibuc.ro");
+    std::ofstream o ("Feedback.txt");
+    std::string msg;
+    char YN;
+    YN == app.firstQuestion();
+
+    if(YN != 'Y'){
+        std::cout << "Ne pare rau sa auzim asta. Oferiti-ne feedback: \n";
+        std::cin >> msg;
+        o << msg;
+        std::cout <<"Multumim frumos! O zi buna.";
+        return 0;
+    }
 
     while (app.firstQuestion() == 'Y') {
         int selectedType = app.sQuestion();
