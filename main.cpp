@@ -74,10 +74,10 @@ private:
 public:
     App() {
         masini.emplace_back(1, "alb", 1.2, 10000);
-        masini.emplace_back(2, "alb", 1.2, 10000);
-        masini.emplace_back(3, "alb", 1.2, 10000);
-        masini.emplace_back(4, "alb", 1.2, 10000);
-        masini.emplace_back(5, "alb", 1.2, 10000);
+        masini.emplace_back(2, "alb", 1.2, 20000);
+        masini.emplace_back(3, "alb", 1.2, 25000);
+        masini.emplace_back(4, "alb", 1.2, 30000);
+        masini.emplace_back(5, "alb", 1.2, 60000);
         nrMasini = contor++;
     }
 
